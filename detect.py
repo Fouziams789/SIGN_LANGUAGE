@@ -3,7 +3,7 @@ import os
 import platform
 import sys
 from pathlib import Path
-
+from audio_output import text_to_speech
 import torch
 
 FILE = Path(__file__).resolve()
@@ -110,7 +110,7 @@ def run(
             if webcam:  # batch_size >= 1
                 p, im0, frame = path[i], im0s[i].copy(), dataset.count
                 s += f'{i}: '
-                print("Prediction",p)
+                # print("Prediction",p)
             else:
                 p, im0, frame = path, im0s.copy(), getattr(dataset, 'frame', 0)
 
@@ -139,6 +139,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------ok")
+                            text_to_speech("Ok")
+                            cnt = 0
                     elif names[int(c)] == "hello":
                         if not flag == 2:
                             flag = 2
@@ -147,6 +149,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------hello")
+                            text_to_speech("Hello")
+                            cnt = 0
                     elif names[int(c)] == "thank you":
                         if not flag == 3:
                             flag = 3
@@ -155,7 +159,10 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------thank you")
-                    elif names[int(c)] == "i love you":
+                            text_to_speech("Thank You")
+                            cnt = 0
+                    elif names[int(c)] == "I love you":
+                        print("7777")
                         if not flag == 4:
                             flag = 4
                             cnt = 0
@@ -163,7 +170,10 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------i love you")
-
+                            text_to_speech("I LOVE YOU")
+                            cnt = 0
+                    elif names[int(c)] == "no detections":
+                        _ = 0
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
