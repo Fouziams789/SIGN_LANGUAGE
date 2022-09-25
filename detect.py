@@ -51,7 +51,7 @@ def run(
         vid_stride=1,  # video frame-rate stride
 ):
     cnt = 0
-    flag =0
+    flag = 0
     audio_num = 0
 
     source = str(source)
@@ -102,9 +102,6 @@ def run(
         with dt[2]:
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
 
-        # Second-stage classifier (optional)
-        # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
-
         # Process predictions
         for i, det in enumerate(pred):  # per image
             seen += 1
@@ -141,8 +138,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------yes")
-                            audio_num+=1
-                            text_to_speech("Yes",audio_num)
+                            audio_num += 1
+                            text_to_speech("Yes", audio_num)
                             cnt = 0
                     elif names[int(c)] == "no":
                         if not flag == 2:
@@ -152,8 +149,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------No")
-                            audio_num+=1
-                            text_to_speech("No",audio_num)
+                            audio_num += 1
+                            text_to_speech("No", audio_num)
                             cnt = 0
                     elif names[int(c)] == "please":
                         if not flag == 3:
@@ -163,8 +160,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------Please")
-                            audio_num+=1
-                            text_to_speech("Please",audio_num)
+                            audio_num += 1
+                            text_to_speech("Please", audio_num)
                             cnt = 0
                     elif names[int(c)] == "help":
                         if not flag == 4:
@@ -174,8 +171,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------Help")
-                            audio_num+=1
-                            text_to_speech("Help",audio_num)
+                            audio_num += 1
+                            text_to_speech("Help", audio_num)
                             cnt = 0
                     elif names[int(c)] == "welcome":
                         if not flag == 4:
@@ -185,8 +182,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------Welcome")
-                            audio_num+=1
-                            text_to_speech("Welcome",audio_num)
+                            audio_num += 1
+                            text_to_speech("Welcome", audio_num)
                             cnt = 0
                     elif names[int(c)] == "sorry":
                         if not flag == 4:
@@ -196,8 +193,8 @@ def run(
                             cnt += 1
                         if cnt == 10:
                             print("------Sorry")
-                            audio_num+=1
-                            text_to_speech("Sorry",audio_num)
+                            audio_num += 1
+                            text_to_speech("Sorry", audio_num)
                             cnt = 0
                     elif names[int(c)] == "no detections":
                         _ = 0
@@ -221,43 +218,30 @@ def run(
             if view_img:
                 if platform.system() == 'Linux' and p not in windows:
                     windows.append(p)
-                    cv2.namedWindow("SIGN LANGUAGE DETECTOR", cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
+                    cv2.namedWindow("SIGN LANGUAGE DETECTOR",
+                                    cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow("SIGN LANGUAGE DETECTOR", im0.shape[1], im0.shape[0])
                 cv2.imshow("SIGN LANGUAGE DETECTOR", im0)
                 cv2.waitKey(1)
-                if cv2.getWindowProperty("SIGN LANGUAGE DETECTOR", cv2.WND_PROP_VISIBLE) < 1:
+                if cv2.waitKey(1) == ord('q'):
                     break
-            # Save results (image with detections)
-            # if save_img:
-            #     if dataset.mode == 'image':
-            #         cv2.imwrite(save_path, im0)
-            #     else:  # 'video' or 'stream'
-            #         if vid_path[i] != save_path:  # new video
-            #             vid_path[i] = save_path
-            #             if isinstance(vid_writer[i], cv2.VideoWriter):
-            #                 vid_writer[i].release()  # release previous video writer
-            #             if vid_cap:  # video
-            #                 fps = vid_cap.get(cv2.CAP_PROP_FPS)
-            #                 w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-            #                 h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            #             else:  # stream
-            #                 fps, w, h = 30, im0.shape[1], im0.shape[0]
-            #             save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
-            #             vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-            #         vid_writer[i].write(im0)
+            if cv2.waitKey(1) == ord('q'):
+                # Destroy all windows
+                cv2.destroyAllWindows()
+                break
 
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
     LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
-    if save_txt or save_img:
-        s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
-        print("here",s)
-        LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
-    if update:
-        strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
-    cv2.destroyWindow("SIGN LANGUAGE DETECTOR")
+    # if save_txt or save_img:
+    #     s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
+    #     print("here", s)
+    #     LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
+    # if update:
+    #     strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
+
 
 def parse_opt():
     parser = argparse.ArgumentParser()
@@ -294,10 +278,9 @@ def parse_opt():
     return opt
 
 
-def main(s,w):
+def main(s, w):
     check_requirements(exclude=('tensorboard', 'thop'))
-    run(source = s,weights = w)
-
+    run(source=s, weights=w)
 
 # if __name__ == "__main__":
 #     opt = parse_opt()
