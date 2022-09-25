@@ -41,8 +41,9 @@ while True:
         window[f'Home'].update(visible=False)
         window[f'Learn'].update(visible=True)
     elif event == '       Detect Signs     ':
+        dt.main(0, 'multi_best.pt')
         # dt.main(0, "best.pt")
-        dt.main(0,'plain_datasetbest.pt')
+        # dt.main(0,'plain_datasetbest.pt')
     elif event == 'back to home':
         window[f'Learn'].update(visible=False)
         window[f'Home'].update(visible=True)
