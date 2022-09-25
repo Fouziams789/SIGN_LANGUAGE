@@ -24,7 +24,7 @@ layout2 = [
             [Sg.Button("Send Feedback")]
           ]
 # Create the window
-window = Sg.Window("Sign Language Detector", layout)
+window = Sg.Window("Sign Language Detector Home", layout)
 
 # Create an event loop
 while True:

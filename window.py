@@ -16,7 +16,7 @@ def title_bar(title, text_color, background_color):
                    pad=(0, 0), background_color=bc)]
 
 def main():
-    background_layout = [title_bar('Sign Language Detector', sg.theme_text_color('black'), sg.theme_background_color()), [sg.Image(r'bg_qb.png')]]
+    background_layout = [title_bar('Sign Language Detect', sg.theme_text_color('black'), sg.theme_background_color()), [sg.Image(r'bg_qb.png')]]
     window_background = sg.Window('Background', background_layout, no_titlebar=True, finalize=True, margins=(0, 0), element_padding=(0, 0), right_click_menu=[[''], ['Exit', ]])
 
     window_background['-C-'].expand(True, False, False)
