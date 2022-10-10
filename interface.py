@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
-import  detect as dt
+import detect as dt
 import learnsigns as ls
+
 head_layout = [
     [sg.Image('imgs/about.png')]
 ]
@@ -11,11 +12,12 @@ home_layout = [
 layout = [
     [[sg.Column(head_layout, key='Home')], [sg.Column(home_layout, key='Learn')]]
 ]
-window = sg.Window('Sign Language Detector Interface',layout,element_justification='c')
+# noinspection PyTypeChecker
+window = sg.Window('Sign Language Detector Interface', layout, element_justification='c')
 
 while True:
     event, values = window.read()
-    if event in (None,'Exit'):
+    if event in (None, 'Exit'):
         break
     elif event == 'Learn Sign Language':
         ls.learsignlayout()
